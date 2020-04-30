@@ -1,38 +1,39 @@
 import requests
 import urllib.parse
+import configparser
 
-def GetWeather(station):
-    Request_URL = "https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization=CWB-FC8F10B8-9C7B-4CE1-A95C-D367619E3E1C"\
-         + "&format=JSON" + "&locationName=" + urllib.parse.quote(station)
+config = configparser.ConfigParser()
+config.read("config.ini")
 
-    # print(Request_URL)
-    data = requests.get(Request_URL).json()
+def CurrentWeather(functions, location):
+    # URL for fetching the current weather
+        Request_URL = config["URL"]["observation_auto"]\
+            + config["settings"]["Authorization"] + "&format=JSON"\
+            + "&locationName=" + urllib.parse.quote(location)
 
-    data = data["records"]["location"]
-    # print("\n\n", data)
+        # filter out which data we need
+        data = requests.get(Request_URL).json()["records"]["location"]
 
-    if not data:
-        target_station = "target station not found"
-        # print(target_station)
-    else:
-        target_station = data[0]
+        # examine if the location is valid
+        if not data:
+            WeatherData = "target station not found"
+            # print(target_station)
+            return False
 
-    return target_station
+        # load message
+        # ref: https://opendata.cwb.gov.tw/opendatadoc/DIV2/A0001-001.pdf
+        CITY = data[0]["parameter"][0]["parameterValue"]
+        TOWN = data[0]["parameter"][2]["parameterValue"]
+        WeatherData = data[0]["weatherElement"]
 
-
-def MakeWeather(station):
-    WeatherData = GetWeather(station)
-    # print(WeatherData)
-    if WeatherData == "target station not found":
-        return False
-
-    WeatherData = WeatherData["weatherElement"]
-    msg = station + "天氣"
-    msg += "\n\n氣溫 = " + WeatherData[3]["elementValue"] + "℃\n"
-    msg += "濕度 = " + \
-        str(float(WeatherData[4]["elementValue"]) * 100) + "% RH\n"
-
-    print(msg)
+        msg = CITY + TOWN + " " + functions + "\n\n"
+        msg += "氣溫：" + WeatherData[3]["elementValue"] + "℃\n"
+        msg += "濕度：" + \
+            str(float(WeatherData[4]["elementValue"]) * 100) + "% RH\n"
+        msg += "風向：" + WeatherData[1]["elementValue"] + "°\n"
+        msg += "風速：" + WeatherData[0]["elementValue"] + " m/s\n"
+        city = msg
+        print(city)
 
 
-MakeWeather("永和")
+CurrentWeather("目前天氣", "永和")
