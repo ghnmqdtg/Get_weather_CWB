@@ -52,9 +52,9 @@ class Get_Weather:
     def GetPredic_Week(self):
         pass
 
-    def Get_Predic_2Days(self):
+    def Get_Predic_3Days(self):
         # URL for fetching prediction for 3 days.
-        Request_URL = config["URL"]["prediction_2days"]\
+        Request_URL = config["URL"]["prediction_3days"]\
             + config["settings"]["Authorization"] + "&format=JSON"\
             + "&locationName=" + urllib.parse.quote(self.location.replace("台", "臺"))
 
