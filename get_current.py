@@ -40,8 +40,7 @@ def Get_Current(functions, location):
     msg += "濕度：" + humidity + "% RH\n"
     # msg += "風向：" + wind_dir + "°\n"
     # msg += "風速：" + wind_speed + " m/s\n"
-    city = msg
-    print(city)
+    print(msg)
 
 
 Get_Current("目前天氣", "永和")

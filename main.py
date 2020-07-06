@@ -43,8 +43,7 @@ class Get_Weather:
         msg += "濕度：" + humidity + "% RH\n"
         # msg += "風向：" + wind_dir + "°\n"
         # msg += "風速：" + wind_speed + " m/s\n"
-        city = msg
-        print(city)
+        print(msg)
 
     def GetPredic(self):
         pass
