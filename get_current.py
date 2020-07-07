@@ -35,7 +35,7 @@ def Get_Current(functions, location):
     # wind_dir = observed_data[1]["elementValue"]
     # wind_speed = observed_data[0]["elementValue"]
 
-    msg = city + town + " " + functions + "\n\n"
+    msg = city + town + " " + functions + "\n"
     msg += "氣溫：" + temp + "℃\n"
     msg += "濕度：" + humidity + "% RH\n"
     # msg += "風向：" + wind_dir + "°\n"
@@ -44,3 +44,10 @@ def Get_Current(functions, location):
 
 
 Get_Current("目前天氣", "永和")
+
+# Results
+'''
+新北市永和區 目前天氣
+氣溫：33.9℃
+濕度：62.0% RH
+'''
