@@ -6,8 +6,8 @@ config = configparser.ConfigParser()
 config.read("config.ini")
 
 
-def Get_36hours(functions, location):
-    if(functions == "三天預報"):
+def Get_Predic_36hours(functions, location):
+    if(functions == "36小時預報"):
         # URL for fetching the current weather
         Request_URL = config["URL"]["prediction_36hours"]\
             + config["settings"]["Authorization"] + "&format=JSON"\
@@ -70,7 +70,7 @@ def Get_36hours(functions, location):
         print("功能名稱錯誤")
 
 
-Get_36hours("目前天氣", "臺北市")
+Get_Predic_36hours("36小時預報", "臺北市")
 
 # Results
 '''
