@@ -6,11 +6,6 @@ import json
 config = configparser.ConfigParser()
 config.read("config.ini")
 
-'''
-def List_Dict_Converter(lst):
-    res_dct = {lst[i]: lst[i + 1] for i in range(0, len(lst), 2)}
-    return res_dct
-'''
 
 def Get_Predic_3Days(functions, location):
     if(functions == "三天預報"):
@@ -126,7 +121,7 @@ if(output):
     # print(output["Prediction"]["Date"], "\n")
     # print(output["Prediction"]["Time"][2], output["Prediction"]["Wx"][2])
 
- # Results_JSON_format
+# Results_JSON_format
 '''
 {
     "Type": "Weather",
