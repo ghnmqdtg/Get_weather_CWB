@@ -7,6 +7,11 @@ config = configparser.ConfigParser()
 config.read("config.ini")
 
 
+def List_Dict_Converter(lst):
+    res_dct = {lst[i]: lst[i + 1] for i in range(0, len(lst), 2)}
+    return res_dct
+
+
 def Get_Predic_3Days(functions, location):
     if(functions == "三天預報"):
         # URL for fetching prediction for 3 days.
@@ -33,24 +38,13 @@ def Get_Predic_3Days(functions, location):
                 "Type": function_type,
                 "Description": description,
                 "Location": location,
-                "Prediction": {
-                    "Date": [],
-                    "Time": [],
-                    "Wx": [],
-                    "PoP6h": [],
-                    "AT": []
-                }
+                "Prediction": []
             }
+            keyname = ["Date", "Time", "Wx", "PoP6h", "AT"]
 
-            '''
             # Long form: Wx, PoP, AT, T, RH, CI
-            index = [1, 7, 2, 3, 4, 5]
-            dict_output = {
-                "Type": function_type, "Description": description,
-                "Location": location, "Prediction": {"Date": [],
-                "Time": [], "Wx": [], "PoP6h": [], "AT": [],
-                "T": [], "RH": [], "CI": []}}
-            '''
+            # index = [1, 7, 2, 3, 4, 5]
+            # keyname = ["Date", "Time", "Wx", "PoP6h", "AT", "T", "RH", "CI"]
 
             i = 0
             # Categorize data into strings
@@ -99,10 +93,13 @@ def Get_Predic_3Days(functions, location):
                 if(i < 4):
                     # split the string into list
                     list_results[order] = content.split(" ")
-                    # save elements of the list into the output list in dict
-                    for j, keys in enumerate(load):
-                        load[keys].append(list_results[order][j])
+
+                    for num in range(0, len(keyname)):
+                        list_results[order].insert(num * 2, keyname[num])
+
+                    load.append(List_Dict_Converter(list_results[order]))
                 i = i + 1
+
             return dict_output
 
         else:
@@ -116,10 +113,6 @@ output = Get_Predic_3Days("三天預報", "台北市")
 if(output):
     # JSON format
     print(json.dumps(output, indent=4, ensure_ascii=False))
-    # dict format
-    # print(output["Prediction"], "\n")
-    # print(output["Prediction"]["Date"], "\n")
-    # print(output["Prediction"]["Time"][2], output["Prediction"]["Wx"][2])
 
 # Results_JSON_format
 '''
@@ -127,37 +120,35 @@ if(output):
     "Type": "Weather",
     "Description": "三天預報",
     "Location": "台北市",
-    "Prediction": {
-        "Date": [
-            "07/14~14",
-            "07/14~14",
-            "07/14~14",
-            "07/14~14"
-        ],
-        "Time": [
-            "00:00~03:00",
-            "03:00~06:00",
-            "06:00~09:00",
-            "09:00~12:00"
-        ],
-        "Wx": [
-            "晴",
-            "多雲",
-            "晴",
-            "晴"
-        ],
-        "PoP6h": [
-            "0%",
-            "0%",
-            "0%",
-            "0%"
-        ],
-        "AT": [
-            "32",
-            "31",
-            "30",
-            "37"
-        ]
-    }
+    "Prediction": [
+        {
+            "Date": "07/14~14",
+            "Time": "00:00~03:00",
+            "Wx": "晴",
+            "PoP6h": "0%",
+            "AT": "32"
+        },
+        {
+            "Date": "07/14~14",
+            "Time": "03:00~06:00",
+            "Wx": "多雲",
+            "PoP6h": "0%",
+            "AT": "31"
+        },
+        {
+            "Date": "07/14~14",
+            "Time": "06:00~09:00",
+            "Wx": "晴",
+            "PoP6h": "0%",
+            "AT": "30"
+        },
+        {
+            "Date": "07/14~14",
+            "Time": "09:00~12:00",
+            "Wx": "晴",
+            "PoP6h": "0%",
+            "AT": "37"
+        }
+    ]
 }
 '''
