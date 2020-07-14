@@ -87,10 +87,9 @@ def Get_Predic_3Days(functions, location):
             # Prepar for the output dict
             # Steps: string > split into list > save into the list in dict
             load = dict_output["Prediction"]
-            i = 0
             for order, content in enumerate(list_results):
                 # determine how many data to be loaded
-                if(i < 4):
+                if(order < 4):
                     # split the string into list
                     list_results[order] = content.split(" ")
 
@@ -98,7 +97,6 @@ def Get_Predic_3Days(functions, location):
                         list_results[order].insert(num * 2, keyname[num])
 
                     load.append(List_Dict_Converter(list_results[order]))
-                i = i + 1
 
             return dict_output
 
